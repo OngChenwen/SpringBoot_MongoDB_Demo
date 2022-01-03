@@ -38,12 +38,12 @@ public class MovieController {
     }
     @PutMapping(value = "/{movieId}")
     public ResponseEntity<Movie> updateMovie(@PathVariable String movieId, @RequestBody Movie movie) {
-        if (movieRepository.findMovieById(movieId).isEmpty()) return ResponseEntity.notFound().build();
-        return new ResponseEntity<>(movieRepository.save(movie), HttpStatus.ACCEPTED);
+        if (!movieRepository.findMovieById(movieId).isPresent()) return ResponseEntity.notFound().build();
+        return new ResponseEntity<>(movieRepository.save(movie), HttpStatus.OK);
     }
     @DeleteMapping(value = "/{movieId}")
     public ResponseEntity<Void> deleteMovie(@PathVariable String movieId) {
-        if (movieRepository.findMovieById(movieId).isEmpty()) return ResponseEntity.notFound().build();
+        if (!movieRepository.findMovieById(movieId).isPresent()) return ResponseEntity.notFound().build();
         movieRepository.deleteById(movieId);
         return ResponseEntity.ok().build();
     }
